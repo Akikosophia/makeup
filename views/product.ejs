@@ -1,0 +1,19 @@
+
+<%- include('./partials/head') %>
+
+<main>
+
+    <ul>
+        <% makeup.forEach(product => { %>
+            <li>
+                <a href="/detail/<%= product.id %>"><%= product.id %></a>
+                <%= product.name %> - <%= product.brand %>
+                <img src="<%= product.image_link %>" alt="<%= product.name %>">
+            </li>
+        <% }) %>
+    </ul>
+
+</main>
+
+
+<%- include('./partials/foot') %>

@@ -1,0 +1,53 @@
+<%- include('./partials/head') %>
+
+    <main>
+
+        <h1>Maybelline Makeup Products</h1>
+        <!-- <ul>
+            <% makeup.forEach(product=> { %>
+                <li>
+                    <a href="/detail?id"><%= product.product_link %></a>
+                    <%= product.name %> - <%= product.brand %>
+                            <img src="<%= product.image_link %>" alt="<%= product.name %>">
+                         
+                </li>
+            <% }) %>
+        </ul> -->
+
+
+
+        <!-- <article>
+
+            <h2>Berichten</h2>
+            <ul>
+              <% messages.forEach(message => { %> 
+                <li><%= message %></li> <% }) %>
+            </ul>
+          
+          <form method="POST" action="/">
+            <label> Typ hier je bericht
+              <textarea required name="bericht">
+              </textarea>
+            </label>
+            <button type="submit" >verstuurd</button>
+          </form>
+          
+          </article> -->
+
+
+          <article>
+        <ul>
+            <% makeup.forEach(product => { %>
+                <li>
+                    <a href="/detail/<%= product.id %>"><%= product.id %></a>
+                    <%= product.name %> - <%= product.brand %>
+                    <img src="<%= product.image_link %>" alt="<%= product.name %>">
+                </li>
+            <% }) %>
+        </ul>
+
+    </article>
+
+    </main>
+
+    <%- include('./partials/foot') %>
