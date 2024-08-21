@@ -71,7 +71,7 @@ app.get('/detail', async (req, res) => {
 // Hier heb ik een lege array lijst gemaakt voor de rating
 const messages = []
 
-let makeup = []
+// let makeup = []
 
 app.post('/detail', function (request, response) {
     messages.push(request.body.bericht);
