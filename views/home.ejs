@@ -2,51 +2,34 @@
 
     <main>
 
-        <h1>Maybelline Makeup Products</h1>
-        <!-- <ul>
-            <% makeup.forEach(product=> { %>
-                <li>
-                    <a href="/detail?id"><%= product.product_link %></a>
-                    <%= product.name %> - <%= product.brand %>
-                            <img src="<%= product.image_link %>" alt="<%= product.name %>">
-                         
-                </li>
-            <% }) %>
-        </ul> -->
+        <h1>Makeup Products</h1>
 
 
 
-        <!-- <article>
 
-            <h2>Berichten</h2>
-            <ul>
-              <% messages.forEach(message => { %> 
-                <li><%= message %></li> <% }) %>
-            </ul>
-          
-          <form method="POST" action="/">
-            <label> Typ hier je bericht
-              <textarea required name="bericht">
-              </textarea>
-            </label>
-            <button type="submit" >verstuurd</button>
-          </form>
-          
-          </article> -->
+        <div class="carousel-wrapper">
+            <article class="carousel">
+                <ul class="carousel-list">
+                    <% makeup.forEach(product=> { %>
+                        <li class="carousel-item">
+                            <a href="/detail/<%= product.id %>">
+                                <img src="<%= product.image_link %>" alt="<%= product.name %>" width="200px"
+                                    height="300" loading="lazy"
+                                    onerror="this.onerror=null; this.src='https://via.placeholder.com/200x300/CCCCCC/FFFFFF?text=No+Image';">
+                                <div class="product-name">
+                                    <%= product.name %>
+                                </div>
+                                <div class="product-brand">
+                                    <%= product.brand %>
+                                </div>
+                            </a>
+                        </li>
+                        <% }) %>
+                </ul>
+            </article>
+        </div>
 
 
-          <article>
-        <ul>
-            <% makeup.forEach(product => { %>
-                <li>
-                    <a href="/detail/<%= product.id %>"><%= product.id %></a>
-                    <%= product.name %> - <%= product.brand %>
-                    <img src="<%= product.image_link %>" alt="<%= product.name %>">
-                </li>
-            <% }) %>
-        </ul>
-
-    </article>
 
     </main>
 

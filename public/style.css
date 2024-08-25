@@ -5,15 +5,29 @@
   }
 
 
+:root {
+    --body-color: #E4E9F7;
+    --nav-color:pink;
+  }
+
+
 body {
     font-family: Arial, Helvetica, sans-serif;
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
+    font-size: 1em;
+}
+
+
+h1.product-name{
+    margin-top:0.5em;
+    margin-bottom: 0.7em;
+    font-size: 32px;
+    margin-left: 2%;
 }
 
 h1 {
-    margin-top: 1.5em;
+    margin-top:2.5em;
+    margin-left: 10%;
+ 
 }
 
 /* MENU MOBILE FIRST  */
@@ -32,9 +46,14 @@ nav {
     margin: 1em;
     list-style: none;
  }
+
  
  details[open] .rect-icoon .close {
       display: block;
+ }
+
+ details[open].winkelmand-icoon{
+    display: none;
  }
  
  details.menu {
@@ -73,7 +92,227 @@ nav {
    display: none;
  }
 
+ details.menu[open]svg.winkelmand-icoon {
+  display: none;
+ }
 
- 
+.winkelmand-icoon {
+    position: absolute;
+    right:0;
+}
+
+
 /* END MENU MOBILE FIRST */
 
+/* RATING */
+
+/* Rating sectie */
+.rating {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+
+.rating h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.stars {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.stars input {
+    display: none;
+}
+
+
+.stars label:before {
+    content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="%23FFC0CB" d="M32 12.408l-11.056-1.607-4.944-10.018-4.944 10.018-11.056 1.607 8 7.798-1.889 11.011 9.889-5.199 9.889 5.199-1.889-11.011 8-7.798zM16 23.547l-6.983 3.671 1.334-7.776-5.65-5.507 7.808-1.134 3.492-7.075 3.492 7.075 7.807 1.134-5.65 5.507 1.334 7.776-6.983-3.671z"></path></svg>');
+}
+
+.stars input:checked ~ label {
+    content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="%23FFC0CB" d="M32 12.408l-11.056-1.607-4.944-10.018-4.944 10.018-11.056 1.607 8 7.798-1.889 11.011 9.889-5.199 9.889 5.199-1.889-11.011 8-7.798z"></path></svg>');
+}
+
+
+.stars input:not(:checked) ~ label:hover {
+    content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="%23FFC0CB" d="M32 12.408l-11.056-1.607-4.944-10.018-4.944 10.018-11.056 1.607 8 7.798-1.889 11.011 9.889-5.199 9.889 5.199-1.889-11.011 8-7.798z"></path></svg>');
+}
+
+
+.stars label {
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+
+/* EINDE RATING  */
+
+/* Product Detail Layout */
+.product-detail {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.detail-image {
+    width: 100%; 
+    height: auto; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+    margin: 0 auto; 
+}
+
+.back-button {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: pink;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.back-button:hover {
+    text-decoration: underline;
+}
+
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    resize: vertical;
+    min-height: 80px;
+}
+
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    background-color: pink;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button[type="submit"]:hover {
+    background-color: palevioletred;
+}
+
+
+/* EINDE TEST */
+
+/* CAROUSEL */
+
+
+.carousel-wrapper {
+    display: inline-block; 
+    margin-top: 3em;
+    margin-bottom: 5em;
+}
+
+
+.carousel {
+    overflow-x: scroll; 
+    white-space: nowrap; 
+    padding: 10px 0; 
+    margin-left: 1.7em;
+}
+
+
+.carousel-list {
+    display: flex; /* Maakt de items flexbox-elementen */
+    flex-direction: row; 
+    list-style-type: none; 
+    padding: 0;
+    margin: 0;
+}
+
+
+.carousel-item {
+    flex: 0 0 auto; /* Zorgt ervoor dat elk item zijn eigen breedte behoudt */
+    width: 200px; /* Stel een vaste breedte in voor elk carousel-item */
+    height: 350px; /* Stel een vaste hoogte in voor elk carousel-item, inclusief de afbeelding en tekst */
+    margin-right: 15px; 
+    text-align: center; 
+    position: relative; /* Maakt het mogelijk om absolute positionering van kinderen te gebruiken */
+}
+
+.carousel-item img {
+    width: 100%;
+    object-fit: cover; 
+    object-position: center; /* Centreert de afbeelding binnen de container */
+    display: block;
+    border-radius: 8px; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.product-name, .product-brand {
+    display: block; /* Zorgt ervoor dat de elementen als blokken worden weergegeven */
+    width: 100%; 
+    text-overflow: ellipsis; 
+    overflow: hidden; 
+    white-space: nowrap;
+}
+
+.product-name {
+    font-size: 16px; 
+    font-weight: bold;
+    margin-top: 10px; 
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.product-brand {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 14px;
+    color: #555; 
+    margin-top: 4px; 
+    margin-bottom: 10px;
+}
+
+
+/* EINDE CAROUSEL */
+
+ul.product-info {
+  list-style: none;
+  margin-top: 1em;
+
+}
+
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap; 
+    list-style: none; 
+    padding: 0;
+    margin: 30px;
+    gap: 30px; 
+}
+
+
+.product-item {
+    margin-top: 20px;
+    box-sizing: border-box; 
+    background: #fff; 
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    overflow: hidden; 
+    text-align: center; 
+}

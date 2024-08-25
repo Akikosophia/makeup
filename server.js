@@ -22,7 +22,7 @@ app.get('/', async (req, res) => {
         // Render de 'home.ejs' template en geef de makeup data mee
         res.render('home', {
             makeup: makeup,
-            messages: messages
+            // messages: messages
         });
     } catch (error) {
         console.error('Er is een fout opgetreden:', error);
@@ -40,7 +40,7 @@ app.get('/', async (req, res) => {
 
         console.log(product);
         // Render de 'product.ejs' template en geef het product door
-        res.render('detail', { product: product, messages:messages });
+        res.render('detail', { product: product });
         
     } catch (error) {
         console.error('Er is een fout opgetreden:', error);
@@ -59,7 +59,7 @@ app.get('/detail', async (req, res) => {
 
         // Render de 'home.ejs' template en geef de makeup data mee
         res.render('detail', {
-            makeup: makeup, 
+             makeup: makeup
         });
 
     } catch (error) {
@@ -69,37 +69,27 @@ app.get('/detail', async (req, res) => {
 });
 
 // Hier heb ik een lege array lijst gemaakt voor de rating
-const messages = []
+// const messages = []
 
 // let makeup = []
 
-app.post('/detail', function (request, response) {
-    messages.push(request.body.bericht);
-    response.render('detail', { 
-        messages: messages, makeup: makeup  });
-  });
-
-
+// app.post('/detail', function (request, response) {
+//     messages.push(request.body.bericht);
+//     response.render('detail', { 
+//         messages: messages  });
+//   });
 
 app.get('/product', async (req, res) => {
     try {
         const url = 'http://makeup-api.herokuapp.com/api/v1/products.json';
-        const response = await fetch(url); // Maak een fetch verzoek
-        const makeup = await response.json(); // Converteer de respons naar JSON
-        console.log(makeup); // Dit zal de makeup-data loggen in de console
-
-        // Render de 'home.ejs' template en geef de makeup data mee
-        res.render('product', {
-            makeup: makeup, product: product
-        });
-
+        const response = await fetch(url);
+        const makeup = await response.json();
+        res.render('product', { makeup: makeup });
     } catch (error) {
         console.error('Er is een fout opgetreden:', error);
         res.status(500).send('Er is een fout opgetreden bij het ophalen van de data.');
     }
 });
-
-
 
 
 app.listen(3001, () => {

@@ -1,19 +1,29 @@
-
 <%- include('./partials/head') %>
 
-<main>
+    <main>
 
-    <ul>
-        <% makeup.forEach(product => { %>
-            <li>
-                <a href="/detail/<%= product.id %>"><%= product.id %></a>
-                <%= product.name %> - <%= product.brand %>
-                <img src="<%= product.image_link %>" alt="<%= product.name %>">
-            </li>
-        <% }) %>
-    </ul>
+        <h1>Producten</h1>
 
-</main>
+        <ul class="product-list">
+            <% makeup.forEach(product => { %>
+                <li class="product-item">
+                    <a href="/detail/<%= product.id %>">
+                        <img src="<%= product.image_link %>" 
+                             alt="<%= product.name %>" 
+                             width="300" 
+                             height="300" 
+                             onerror="this.onerror=null; this.src='https://via.placeholder.com/200x300/CCCCCC/FFFFFF?text=No+Image';" 
+                             class="product-image">
+                        <div class="product-name"><%= product.name %></div>
+                        <div class="product-brand"><%= product.brand %></div>
+                    </a>
+                </li>
+            <% }) %>
+        </ul>
+        
+        
+
+    </main>
 
 
-<%- include('./partials/foot') %>
+    <%- include('./partials/foot') %>
