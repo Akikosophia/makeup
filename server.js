@@ -50,23 +50,23 @@ app.get('/', async (req, res) => {
 });  
 
 
-app.get('/detail', async (req, res) => {
-    try {
-        const url = 'http://makeup-api.herokuapp.com/api/v1/products.json';
-        const response = await fetch(url); // Maak een fetch verzoek
-        const makeup = await response.json(); // Converteer de respons naar JSON
-        console.log(makeup); // Dit zal de makeup-data loggen in de console
+// app.get('/detail', async (req, res) => {
+//     try {
+//         const url = 'http://makeup-api.herokuapp.com/api/v1/products.json';
+//         const response = await fetch(url); // Maak een fetch verzoek
+//         const makeup = await response.json(); // Converteer de respons naar JSON
+//         console.log(makeup); // Dit zal de makeup-data loggen in de console
 
-        // Render de 'home.ejs' template en geef de makeup data mee
-        res.render('detail', {
-             makeup: makeup
-        });
+//         // Render de 'home.ejs' template en geef de makeup data mee
+//         res.render('detail', {
+//              makeup: makeup
+//         });
 
-    } catch (error) {
-        console.error('Er is een fout opgetreden:', error);
-        res.status(500).send('Er is een fout opgetreden bij het ophalen van de data.');
-    }
-});
+//     } catch (error) {
+//         console.error('Er is een fout opgetreden:', error);
+//         res.status(500).send('Er is een fout opgetreden bij het ophalen van de data.');
+//     }
+// });
 
 // Hier heb ik een lege array lijst gemaakt voor de rating
 // const messages = []
