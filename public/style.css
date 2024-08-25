@@ -123,6 +123,7 @@ nav {
 .stars {
     display: flex;
     justify-content: center;
+    direction: rtl;
     margin-bottom: 15px;
 }
 
