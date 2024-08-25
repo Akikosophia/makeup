@@ -1,0 +1,29 @@
+{
+  "products": [
+    {
+      "id": "1047",
+      "name": "Product Name",
+      "ratings": [
+        {
+          "rate": 5,
+          "beoordeling": "Excellent!"
+        },
+        {
+          "rate": "5",
+          "beoordeling": "      hi"
+        },
+        {
+          "beoordeling": "      hello"
+        },
+        {
+          "rate": "4",
+          "beoordeling": "      hoi "
+        },
+        {
+          "rate": "3",
+          "beoordeling": "      hii hii"
+        }
+      ]
+    }
+  ]
+}

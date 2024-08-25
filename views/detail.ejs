@@ -2,7 +2,8 @@
 
 
         <main class="product-detail">
-         
+            <a href="/product" class="back-button">Back</a>
+
             <% if (product) { %>
                 <h1 class="product-name">
                     <%= product.name %>
@@ -38,6 +39,19 @@
 
 
                         <article class="rating">
+
+                            <h3>Beoordeling</h3>
+
+        
+                            <ul>
+                                <% if (messages && messages.length > 0) { %>
+                                    <% messages.forEach(message => { %> 
+                                        <li><%= message %></li> 
+                                    <% }) %>
+                                <% } else { %>
+                                    <li>No messages available</li>
+                                <% } %>
+                            </ul>
 
                             <h2>Rating</h2>
 
