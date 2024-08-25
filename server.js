@@ -45,6 +45,7 @@ app.get('/view-data', (req, res) => {
     });
 });
 
+
 app.post('/detail/:id', async (req, res) => {
     const productId = req.params.id;
     const { rate, beoordeling } = req.body;
@@ -57,7 +58,7 @@ app.post('/detail/:id', async (req, res) => {
         const data = fs.readFileSync(jsonFilePath, 'utf8');
         let jsonData = JSON.parse(data);
 
-        // Zoek het juiste product op ID
+        // Zoek het juiste product op ID in de lokale JSON data
         const product = jsonData.products.find(p => p.id === productId);
         if (product) {
             // Voeg de nieuwe rating en beoordeling toe
@@ -65,24 +66,27 @@ app.post('/detail/:id', async (req, res) => {
                 product.ratings = [];
             }
             product.ratings.push({
-                rate: rate,
-                beoordeling: beoordeling
+                rate: parseInt(rate, 10),  // Zorg ervoor dat de rating een integer is
+                beoordeling: beoordeling.trim()
             });
 
-            console.log('Updated product:', product);
+            console.log('Updated product with new rating:', product);
 
             // Schrijf de gewijzigde data terug naar het JSON-bestand
             fs.writeFileSync(jsonFilePath, JSON.stringify(jsonData, null, 2));
 
-            // Verkrijg productgegevens van de externe API
+            // Verkrijg de productgegevens van de externe API
             const urlid = `https://makeup-api.herokuapp.com/api/v1/products/${productId}.json`;
-            const back = await fetch(urlid);
-            const apiProduct = await back.json(); // Haalt het specifieke product op
+            const response = await fetch(urlid);
+            const apiProduct = await response.json();
+
+            // Voeg de lokale ratings toe aan het API product
+            apiProduct.ratings = product.ratings;
 
             // Verzamel de berichten voor weergave
-            const messages = product.ratings.map(r => `Rating: ${r.rate} - Beoordeling: ${r.beoordeling.trim()}`);
+            const messages = apiProduct.ratings.map(r => `Rating: ${r.rate} - Beoordeling: ${r.beoordeling}`);
 
-            // Render de 'detail.ejs' template en geef zowel de API-productgegevens als de berichten door
+            // Render de 'detail.ejs' template en geef het API-product en de berichten door
             res.render('detail', { product: apiProduct, messages: messages });
 
         } else {
@@ -94,6 +98,43 @@ app.post('/detail/:id', async (req, res) => {
     }
 });
 
+
+app.get('/detail/:id', async (req, res) => {
+    const productId = req.params.id;
+
+    try {
+        // Verkrijg productgegevens van de externe API
+        const urlid = `https://makeup-api.herokuapp.com/api/v1/products/${productId}.json`;
+        const response = await fetch(urlid);
+        const apiProduct = await response.json();
+
+        // Lees de lokale JSON data om beoordelingen op te halen
+        const data = fs.readFileSync(jsonFilePath, 'utf8');
+        const jsonData = JSON.parse(data);
+
+        // Zoek het juiste product in de lokale data om eventuele beoordelingen op te halen
+        const localProduct = jsonData.products.find(p => p.id === productId);
+
+        let messages = [];
+        if (localProduct && localProduct.ratings) {
+            // Verwerk de bestaande beoordelingen om weer te geven
+            messages = localProduct.ratings.map(r => `Rating: ${r.rate} - Beoordeling: ${r.beoordeling.trim()}`);
+            
+            // Voeg de lokale ratings toe aan de API-productgegevens
+            apiProduct.ratings = localProduct.ratings;
+        } else {
+            // Zorg ervoor dat er een lege array is als er geen beoordelingen zijn
+            apiProduct.ratings = [];
+        }
+
+        // Render de 'detail.ejs' template en geef zowel de API-productgegevens als de berichten door
+        res.render('detail', { product: apiProduct, messages: messages });
+        
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Server error');
+    }
+});
 
 
 app.get('/', async (req, res) => {
@@ -113,42 +154,6 @@ app.get('/', async (req, res) => {
         res.status(500).send('Er is een fout opgetreden bij het ophalen van de data.');
     }
 });
-
-
-app.get('/detail/:id', async (req, res) => {
-    try {
-        const productId = req.params.id;
-
-        // Verkrijg productgegevens van de externe API
-        const urlid = `https://makeup-api.herokuapp.com/api/v1/products/${productId}.json`;
-        const back = await fetch(urlid);
-        const product = await back.json(); // Haalt het specifieke product op
-
-        // Verkrijg de productgegevens van het lokale JSON-bestand om beoordelingen op te halen
-        const data = fs.readFileSync(jsonFilePath, 'utf8');
-        const jsonData = JSON.parse(data);
-
-        // Zoek het juiste product op ID in je lokale JSON-bestand
-        const localProduct = jsonData.products.find(p => p.id === productId);
-
-        if (localProduct) {
-            // Verzamel de berichten voor weergave
-            const messages = localProduct.ratings.map(r => `Rating: ${r.rate} - Beoordeling: ${r.beoordeling.trim()}`);
-
-            // Render de 'detail.ejs' template en geef zowel de productgegevens als de berichten door
-            res.render('detail', { product: product, messages: messages });
-        } else {
-            console.error('Product not found in local data with ID:', productId);
-            res.status(404).send('Product not found');
-        }
-
-    } catch (error) {
-        console.error('Er is een fout opgetreden:', error);
-        res.status(500).send('Er is een fout opgetreden bij het ophalen van het product.');
-    }
-});
-
-
 
 app.get('/detail', async (req, res) => {
     try {

@@ -30,6 +30,10 @@ h1 {
  
 }
 
+h3 {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
 /* MENU MOBILE FIRST  */
 
 nav {
@@ -177,10 +181,12 @@ nav {
 .back-button {
     display: inline-block;
     margin-bottom: 20px;
+    margin-top: 1.8em;
     color: pink;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 1.5em;
     font-weight: bold;
+    margin-left: 2%;
 }
 
 .back-button:hover {

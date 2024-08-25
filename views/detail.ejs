@@ -38,48 +38,53 @@
 
 
 
-                        <article class="rating">
+                    <article class="rating">
 
-                            <h3>Beoordeling</h3>
-
-        
-                            <ul>
-                                <% if (messages && messages.length > 0) { %>
-                                    <% messages.forEach(message => { %> 
-                                        <li><%= message %></li> 
-                                    <% }) %>
-                                <% } else { %>
-                                    <li>No messages available</li>
-                                <% } %>
-                            </ul>
-
-                            <h2>Rating</h2>
-
-
-                            <form method="POST" action="/detail/<%= product.id %>">
-                                <div class="stars">
-                                    <input type="radio" id="five" name="rate" value="5">
-                                    <label for="five"></label>
-                                    <input type="radio" id="four" name="rate" value="4">
-                                    <label for="four"></label>
-                                    <input type="radio" id="three" name="rate" value="3">
-                                    <label for="three"></label>
-                                    <input type="radio" id="two" name="rate" value="2">
-                                    <label for="two"></label>
-                                    <input type="radio" id="one" name="rate" value="1">
-                                    <label for="one"></label>
+                    
+                        <h2>Rating</h2>
+                    
+                        <form method="POST" action="/detail/<%= product.id %>">
+                            <div class="stars">
+                                <input type="radio" id="five" name="rate" value="5">
+                                <label for="five"></label>
+                                <input type="radio" id="four" name="rate" value="4">
+                                <label for="four"></label>
+                                <input type="radio" id="three" name="rate" value="3">
+                                <label for="three"></label>
+                                <input type="radio" id="two" name="rate" value="2">
+                                <label for="two"></label>
+                                <input type="radio" id="one" name="rate" value="1">
+                                <label for="one"></label>
+                            </div>
+                    
+                            <label> Typ hier je beoordeling
+                                <textarea required name="beoordeling"></textarea>
+                            </label>
+                            <button type="submit">verstuurd</button>
+                        </form>
+                    
+                    </article>
+                    
+                    <article class="existing-ratings">
+                        <h3>Beoordelingen</h3>
+                        <% if (product.ratings && product.ratings.length > 0) { %>
+                            <% product.ratings.forEach(rating => { %>
+                                <div class="rating-item">
+                                    <div class="stars-display">
+                                        <% for (let i = 1; i <= 5; i++) { %>
+                                            <span class="star <%= i <= rating.rate ? 'filled' : '' %>">
+                                                &#9733;
+                                            </span>
+                                        <% } %>
+                                    </div>
+                                    <p><%= rating.beoordeling.trim() %></p>
                                 </div>
-
-                                <label> Typ hier je beoordeling
-                                    <textarea required name="beoordeling">
-      </textarea>
-                                </label>
-                                <button type="submit">verstuurd</button>
-                            </form>
-
-
-
-                        </article>
+                            <% }) %>
+                        <% } else { %>
+                            <p>Geen beoordelingen beschikbaar.</p>
+                        <% } %>
+                    </article>
+                    
 
         </main>
 
