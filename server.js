@@ -45,29 +45,17 @@ app.get('/view-data', (req, res) => {
     });
 });
 
-
-app.post('/detail/:id', (req, res) => {
+app.post('/detail/:id', async (req, res) => {
     const productId = req.params.id;
     const { rate, beoordeling } = req.body;
 
     console.log('Received productId:', productId);
     console.log('Received body:', req.body);
 
-
-    // Lees het bestaande JSON-bestand
-    fs.readFile(jsonFilePath, 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading JSON file:', err);
-            return res.status(500).send('Server error');
-        }
-
-        let jsonData;
-        try {
-            jsonData = JSON.parse(data);
-        } catch (parseErr) {
-            console.error('Error parsing JSON data:', parseErr);
-            return res.status(500).send('Server error');
-        }
+    try {
+        // Lees het bestaande JSON-bestand
+        const data = fs.readFileSync(jsonFilePath, 'utf8');
+        let jsonData = JSON.parse(data);
 
         // Zoek het juiste product op ID
         const product = jsonData.products.find(p => p.id === productId);
@@ -84,18 +72,29 @@ app.post('/detail/:id', (req, res) => {
             console.log('Updated product:', product);
 
             // Schrijf de gewijzigde data terug naar het JSON-bestand
-            fs.writeFile(jsonFilePath, JSON.stringify(jsonData, null, 2), (writeErr) => {
-                if (writeErr) {
-                    console.error('Error writing JSON file:', writeErr);
-                    return res.status(500).send('Server error');
-                }
-                res.redirect(`/detail/${productId}`);
-            });
+            fs.writeFileSync(jsonFilePath, JSON.stringify(jsonData, null, 2));
+
+            // Verkrijg productgegevens van de externe API
+            const urlid = `https://makeup-api.herokuapp.com/api/v1/products/${productId}.json`;
+            const back = await fetch(urlid);
+            const apiProduct = await back.json(); // Haalt het specifieke product op
+
+            // Verzamel de berichten voor weergave
+            const messages = product.ratings.map(r => `Rating: ${r.rate} - Beoordeling: ${r.beoordeling.trim()}`);
+
+            // Render de 'detail.ejs' template en geef zowel de API-productgegevens als de berichten door
+            res.render('detail', { product: apiProduct, messages: messages });
+
         } else {
             res.status(404).send('Product not found');
         }
-    });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Server error');
+    }
 });
+
+
 
 app.get('/', async (req, res) => {
     try {
@@ -116,23 +115,39 @@ app.get('/', async (req, res) => {
 });
 
 
-  app.get('/detail/:id', async (req, res) => {
+app.get('/detail/:id', async (req, res) => {
     try {
         const productId = req.params.id;
+
+        // Verkrijg productgegevens van de externe API
         const urlid = `https://makeup-api.herokuapp.com/api/v1/products/${productId}.json`;
         const back = await fetch(urlid);
         const product = await back.json(); // Haalt het specifieke product op
 
-        console.log(product);
-        // Render de 'product.ejs' template en geef het product door
-        res.render('detail', { product: product, messages: messages });
-        
+        // Verkrijg de productgegevens van het lokale JSON-bestand om beoordelingen op te halen
+        const data = fs.readFileSync(jsonFilePath, 'utf8');
+        const jsonData = JSON.parse(data);
+
+        // Zoek het juiste product op ID in je lokale JSON-bestand
+        const localProduct = jsonData.products.find(p => p.id === productId);
+
+        if (localProduct) {
+            // Verzamel de berichten voor weergave
+            const messages = localProduct.ratings.map(r => `Rating: ${r.rate} - Beoordeling: ${r.beoordeling.trim()}`);
+
+            // Render de 'detail.ejs' template en geef zowel de productgegevens als de berichten door
+            res.render('detail', { product: product, messages: messages });
+        } else {
+            console.error('Product not found in local data with ID:', productId);
+            res.status(404).send('Product not found');
+        }
+
     } catch (error) {
         console.error('Er is een fout opgetreden:', error);
         res.status(500).send('Er is een fout opgetreden bij het ophalen van het product.');
     }
+});
 
-});  
 
 
 app.get('/detail', async (req, res) => {
